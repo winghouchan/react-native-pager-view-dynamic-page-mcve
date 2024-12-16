@@ -1,50 +1,41 @@
-# Welcome to your Expo app 👋
+# react-native-pager-view-dynamic-page-mcve
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A minimal complete verifiable example of a problem in [React Native Pager View](https://github.com/callstack/react-native-pager-view) where adding a new page and setting it as the active page does not work.
 
-## Get started
+## Steps to reproduce
 
-1. Install dependencies
+After the app is built and opened:
 
-   ```bash
-   npm install
-   ```
+1. Press "Add new page and navigate to it".
 
-2. Start the app
+## Expected behaviour
 
-   ```bash
-    npx expo start
-   ```
+A new page is added and navigated to.
 
-In the output, you'll find options to open the app in a
+## Actual behaviour
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+The new page is added but it cannot be navigated to.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Notes
 
-## Get a fresh project
+Whether the app is using React Native's new architecture seems to be significant. Disabling it resolves the issue, see the `working-example` branch.
 
-When you're ready, run:
+The following change also resolves the issue:
 
-```bash
-npm run reset-project
+```diff
+diff --git a/app/(tabs)/index.tsx b/app/(tabs)/index.tsx
+index 01723ce..c932842 100644
+--- a/app/(tabs)/index.tsx
++++ b/app/(tabs)/index.tsx
+@@ -16,8 +16,10 @@ export default function HomeScreen() {
+   };
+
+   const onNewPage = () => {
+-    console.log('Handle new page');
+-    pagerViewRef.current?.setPage(pages.length - 1);
++    setTimeout(() => {
++      console.log('Handle new page');
++      pagerViewRef.current?.setPage(pages.length - 1);
++    }, 0);
+   };
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
